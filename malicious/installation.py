@@ -35,6 +35,7 @@ def get_project_files():
     base_url = f'https://raw.githubusercontent.com/{owner}/{repo}/{branch}'
     for path in paths.keys():
         os.mkdir(f"C:/Users/{os.getlogin()}/worm/{path}")
+        open(f"C:/Users/{os.getlogin()}/worm/{path}/__init__.py", "x")
         for file in paths.get(path):
             file_url = f"{base_url}/{path}/{file}.py"
 
@@ -52,14 +53,6 @@ def get_project_files():
 
 def main():
     get_project_files()
-
-    python_version = "3.9.7"
-    download_dir = Path.home() / "Downloads"
-    installer_path = download_dir / f"python-{python_version}-amd64.exe"
-    
-    download_python(python_version, installer_path)
-    
-    install_python(installer_path)
     path_to_client = os.path.join("C:/", "Users", os.getlogin(), "worm", "clnt", "client.py")
     subprocess.run([sys.executable, "-m", "pip", "install", "pipenv"], check=True)
     subprocess.run(['pipenv', 'run', 'python', "C:/Users/edanj/worm/clnt/client.py"], check=True)
