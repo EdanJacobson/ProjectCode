@@ -1,13 +1,12 @@
 
 import sys
+import subprocess
 
 subprocess.run([sys.executable, "-m", "pip", "install", "os"], check=True)
 subprocess.run([sys.executable, "-m", "pip", "install", "requests"], check=True)
-subprocess.run([sys.executable, "-m", "pip", "install", "subprocess"], check=True)
 
 import os
 import requests
-import subprocess
 
 
 def download_python(version, download_path):
