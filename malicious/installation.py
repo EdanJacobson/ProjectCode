@@ -2,7 +2,6 @@
 import sys
 import subprocess
 
-subprocess.run([sys.executable, "-m", "pip", "install", "os"], check=True)
 subprocess.run([sys.executable, "-m", "pip", "install", "requests"], check=True)
 
 import os
