@@ -7,7 +7,7 @@ import os
 import subprocess
 import sys
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'server')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'client')))
 
 import threading
 import uuid
