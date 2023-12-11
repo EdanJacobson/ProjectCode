@@ -4,7 +4,7 @@ Protocols for client - methods to send and receive
 """
 import uuid
 
-from constants import *
+from worm.clnt.constants import *
 
 
 class Protocol(object):
