@@ -13,7 +13,7 @@ import win32clipboard
 import keyboard  
 import time
 import threading
-from worm.malicious.maliciousConstants import SLEEP, BACKSPACE, NEW_LINE, TAB, SPACE, REMOVE_FIRST
+from maliciousConstants import SLEEP, BACKSPACE, NEW_LINE, TAB, SPACE, REMOVE_FIRST
 
 
 
