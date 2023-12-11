@@ -44,11 +44,9 @@ else:
 
     def main():
         get_project_files()
-        path_to_client = os.path.join("C:/", "Users", os.getlogin(), "worm", "clnt", "client.py")
-        subprocess.run([sys.executable, "-m", "pip", "install", "pipenv"], check=True)
-        subprocess.run(['pipenv', 'run', 'python', path_to_client], check=True)
-
+        python_exe_path = sys.executable
+        script_path = f"C:/Users/{os.getlogin()}/worm/clnt/client.py"
+        subprocess.run([python_exe_path, script_path])
 
     if __name__ == '__main__':
         main()
-
