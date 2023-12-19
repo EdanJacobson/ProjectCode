@@ -3,7 +3,7 @@ Edan Jacobson
 Constants for client classes
 """
 
-CLIENT_IP = "10.0.0.18"
+CLIENT_IP = "10.20.73.137"
 PORT = 8088
 
 MSG_LEN = 1024
