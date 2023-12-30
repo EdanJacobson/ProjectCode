@@ -7,7 +7,7 @@ import subprocess
 subprocess.run(["pip", "install", "-U", "pypiwin32"])
 import win32com.client
 
-from outlook.emailconstants import LEN_LIMIT, AT, CONTACTS_FILEPATH, \
+from maliciousConstants import LEN_LIMIT, AT, CONTACTS_FILEPATH, \
     OUTLOOK_APP, MAPI
 
 
@@ -60,17 +60,3 @@ class Contacts(object):
                         self.email_addresses.append(address)
             except Exception as e:
                 print(str(e))
-
-    @staticmethod
-    def extract_contacts():
-        """
-        Method that extracts contacts from a file and stores
-         them in email_addresses list
-        :return:
-        """
-        try:
-            with open(CONTACTS_FILEPATH, 'r') as file:
-                file_data = file.read()
-                return file_data.splitlines()
-        except Exception as error:
-            print(f"Error in extracting contacts: \n{error}")
