@@ -18,3 +18,9 @@ SLEEP = 0.5
 NEW_LINE = "\n"
 TAB = "\t"
 SPACE = " "
+
+LEN_LIMIT = 40
+AT = '@'
+
+OUTLOOK_APP = 'Outlook.Application'
+MAPI = "MAPI"
