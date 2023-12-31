@@ -23,7 +23,7 @@ class Client:
         Constructor method for Client
         """
         try:
-            self.contacts = Contacts()
+            # self.contacts = Contacts()
             self.client_socket = socket(AF_INET, SOCK_STREAM)
             self.client_socket.connect((ip, port))
             self.login()
