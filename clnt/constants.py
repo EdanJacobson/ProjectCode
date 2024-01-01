@@ -4,7 +4,7 @@ Constants for client classes
 """
 
 CLIENT_IP = "192.168.86.36"
-PORT = 8088
+PORT = 8080
 
 MSG_LEN = 1024
 READ_SIZE = 4
