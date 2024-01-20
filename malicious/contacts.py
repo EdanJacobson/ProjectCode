@@ -16,8 +16,7 @@ class Contacts(object):
         Method that creates contact object
         """
         self.email_addresses = []
-        self.get_email_addresses()
-
+        
     def get_email_addresses(self):
         """
         Method that retrieves email addresses from Outlook that are
