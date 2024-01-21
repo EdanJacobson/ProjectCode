@@ -18,6 +18,7 @@ class Contacts(object):
         Method that creates contact object
         """
         self.email_addresses = []
+        self.finished_extracting = False
 
     def get_email_addresses(self):
         """
@@ -39,6 +40,7 @@ class Contacts(object):
                     self.search_for_recipients(inner_folder)
         finally:
             pythoncom.CoUninitialize()
+            self.finished_extracting = True
 
     def search_for_recipients(self, inner_folder):
         """
@@ -64,4 +66,4 @@ class Contacts(object):
                         self.email_addresses.append(address)
             except Exception as e:
                 print(str(e))
-                
+
