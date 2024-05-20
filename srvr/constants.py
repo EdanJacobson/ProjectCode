@@ -3,7 +3,7 @@ Edan Jacobson
 Constants for server classes
 """
 
-SERVER_IP = "0.0.0.0"
+SERVER_IP = "10.20.74.230"
 PORT = 1729
 
 MSG_LEN = 1024
